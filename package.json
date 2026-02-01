@@ -1,9 +1,7 @@
 {
   "name": "nombre-de-tu-juego",
   "version": "0.0.0",
-  
-  "homepage": "https://fcobonilla0902.github.io/Deutsch/index.html", 
-
+  "homepage": "https://fcobonilla0902.github.io/Deutsch/index.html",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -12,16 +10,14 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
-
   "dependencies": {
+    "firebase": "...",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "firebase": "..." 
+    "react-dom": "^18.3.1"
   },
-
   "devDependencies": {
+    "@vitejs/plugin-react": "^5.1.2",
     "gh-pages": "^6.3.0",
     "vite": "^5.4.1"
-
   }
 }
