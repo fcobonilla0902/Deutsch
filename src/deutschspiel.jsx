@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyD1jxEk2Ose6MM5wUq0rfth2XLh6c4kecw",
@@ -67,7 +67,6 @@ function roomRef(code) { return db.ref(`rooms/${code}`); }
     @keyframes glow     { 0%,100%{box-shadow:0 0 12px #f97316aa} 50%{box-shadow:0 0 28px #f97316ff,0 0 48px #f9731644} }
     @keyframes glow2    { 0%,100%{box-shadow:0 0 12px #a855f7aa} 50%{box-shadow:0 0 28px #a855f7ff,0 0 48px #a855f744} }
 
-    /* ── RESPONSIVE GAME GRID ── */
     .ds-game-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -76,21 +75,17 @@ function roomRef(code) { return db.ref(`rooms/${code}`); }
       margin-bottom: 38px;
     }
     @media (max-width: 700px) {
-      .ds-game-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .ds-game-grid { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 380px) {
-      .ds-game-grid {
-        grid-template-columns: 1fr;
-      }
+      .ds-game-grid { grid-template-columns: 1fr; }
     }
   `;
   document.head.appendChild(s);
 })();
 
 /* ══════════════════════════════════════════════
-   GAME DATA — originales + 2 nuevos (game7, game8)
+   GAME DATA — 10 juegos
    ══════════════════════════════════════════════ */
 const GAME_DATA = {
   game1: {
@@ -177,10 +172,9 @@ const GAME_DATA = {
       { q: "Er sitzt ___.", hint: "¿Dónde está sentado?", options: ["da","dahin","hierhin","dorthin"], answer: 0, explanation: "\"da\" indica ubicación estática. Él está sentado ahí." },
     ]
   },
-
   game7: {
     id: "game7", title: "☕ ¿Einer, Eins o Eine?", category: 4,
-    description: "Elige la forma correcta del pronombre indefinido según el género del sustantivo.",
+    description: "Elige la forma correcta del pronombre indefinido según el género.",
     questions: [
       { q: "Brauchst du einen Espresso? – Ja, ich brauche ___.", hint: "Espresso = der (masculino) → Akkusativ", options: ["einen","eins","eine","welche"], answer: 0, explanation: "\"einen\" → Akkusativ masculino. El pronombre reemplaza a 'einen Espresso' (der Espresso)." },
       { q: "Ist hier ein Messer? – Nein, hier ist ___.", hint: "Messer = das (neutro) → Nominativ negativo", options: ["keiner","keins","keine","keinen"], answer: 1, explanation: "\"keins\" → Nominativ neutro negativo. Das Messer → keins." },
@@ -192,7 +186,6 @@ const GAME_DATA = {
       { q: "Ich suche Gabeln. – Hier sind ___.", hint: "Gabeln = Plural → ¿positivo o negativo?", options: ["welche","keine","einer","eins"], answer: 0, explanation: "\"welche\" → plural afirmativo (hay algunas). Si no hubiera, sería 'keine'." },
     ]
   },
-
   game8: {
     id: "game8", title: "🍽️ Nominativ oder Akkusativ?", category: 4,
     description: "¿El pronombre indefinido es sujeto (Nominativ) o complemento directo (Akkusativ)?",
@@ -204,135 +197,133 @@ const GAME_DATA = {
       { q: "\"Möchtest du einen Espresso? – Ja, ich möchte einen.\" – ¿Caso de 'einen'?", hint: "'möchten' + objeto directo", options: ["Nominativ (sujeto)","Akkusativ (objeto directo)"], answer: 1, explanation: "\"möchte\" + objeto directo → Akkusativ masculino = 'einen'. ¿Was möchte ich? → einen." },
       { q: "\"Ist hier eine Portion? – Ja, hier ist eine.\" – ¿Caso de 'eine'?", hint: "Después de 'ist' → ¿qué caso?", options: ["Nominativ (sujeto)","Akkusativ (objeto directo)"], answer: 0, explanation: "Después de 'sein' (ist) el pronombre es sujeto → Nominativ femenino = 'eine'." },
       { q: "\"Er bestellt eine Portion. Er bestellt eine.\" – ¿Caso de la segunda 'eine'?", hint: "'bestellen' → ¿transitivo o intransitivo?", options: ["Nominativ (sujeto)","Akkusativ (objeto directo)"], answer: 1, explanation: "\"bestellt\" es transitivo → necesita Akkusativ. Femenino Akkusativ = 'eine' (idéntico al Nominativ)." },
-      { q: "\"Kein Besteck? Hier ist keins.\" vs. \"Ich brauche keins.\" – ¿En cuál oración 'keins' es Akkusativ?", hint: "Busca el verbo transitivo que exige objeto directo", options: ["\"Hier ist keins\" (1ª oración)","\"Ich brauche keins\" (2ª oración)"], answer: 1, explanation: "\"brauche\" pide objeto directo → Akkusativ neutro = 'keins'. 'Hier ist keins' es Nominativ (sujeto)." },
+      { q: "\"Kein Besteck? Hier ist keins.\" vs. \"Ich brauche keins.\" – ¿En cuál 'keins' es Akkusativ?", hint: "Busca el verbo transitivo que exige objeto directo", options: ["\"Hier ist keins\" (1ª oración)","\"Ich brauche keins\" (2ª oración)"], answer: 1, explanation: "\"brauche\" pide objeto directo → Akkusativ neutro = 'keins'. 'Hier ist keins' es Nominativ (sujeto)." },
     ]
   },
-
   game9: {
-  id: "game9", title: "🔀 Verb-Ende con wenn", category: 5,
-  description: "Elige la forma correcta: el verbo conjugado siempre va al FINAL del Nebensatz.",
-  questions: [
-    {
-      q: "Ich gehe nach Hause, wenn es zu regnen ___.",
-      hint: "Verbo al final del Nebensatz",
-      options: ["beginnt", "beginnt es", "es beginnt", "beginnen"],
-      answer: 0,
-      explanation: "En el Nebensatz con 'wenn', el verbo conjugado va siempre al final: '…wenn es zu regnen beginnt.'"
-    },
-    {
-      q: "Wenn du früh ___, hast du mehr Zeit.",
-      hint: "NS antes del HS → verbo al final del NS",
-      options: ["aufstehst", "stehst auf", "du aufstehst", "aufsteht"],
-      answer: 0,
-      explanation: "'aufstehst' va al final del Nebensatz. Verbos separables también van al final, unidos: 'aufstehst'."
-    },
-    {
-      q: "Er ruft mich an, wenn er Zeit ___.",
-      hint: "¿Cuál es la forma conjugada correcta al final?",
-      options: ["hat", "haben", "er hat", "habe"],
-      answer: 0,
-      explanation: "'hat' (3.ª persona singular de 'haben') va al final del Nebensatz: '…wenn er Zeit hat.'"
-    },
-    {
-      q: "Wenn es ___, fahren wir Ski.",
-      hint: "El verbo va al final del Nebensatz inicial",
-      options: ["schneit", "es schneit", "schneit es", "schneien"],
-      answer: 0,
-      explanation: "'schneit' al final del NS: 'Wenn es schneit, fahren wir Ski.' — con NS antes, el HS hace inversión."
-    },
-    {
-      q: "Wir spielen draußen, wenn es nicht ___.",
-      hint: "La negación 'nicht' va antes del verbo final",
-      options: ["regnet", "regnet nicht", "nicht regnet", "regnen"],
-      answer: 0,
-      explanation: "Orden: … nicht + Verb (final). 'wenn es nicht regnet' — 'nicht' precede al verbo al final."
-    },
-    {
-      q: "Wenn du müde ___, schlaf ein bisschen.",
-      hint: "Verbo 'sein' conjugado al final del NS",
-      options: ["bist", "sein", "du bist", "ist"],
-      answer: 0,
-      explanation: "'bist' (2.ª persona de 'sein') cierra el Nebensatz: 'Wenn du müde bist, schlaf…'"
-    },
-    {
-      q: "Sie lächelt, wenn sie ihre Freunde ___.",
-      hint: "¿Qué verbo y posición son correctos?",
-      options: ["sieht", "sie sieht", "sehen", "siehst"],
-      answer: 0,
-      explanation: "'sieht' (3.ª pers. sing. de 'sehen') al final: '…wenn sie ihre Freunde sieht.'"
-    },
-    {
-      q: "Wenn Sie keine Bestätigung ___, kann ich Ihnen kein Zimmer geben.",
-      hint: "NS antes del HS — verbo al final del NS",
-      options: ["haben", "haben Sie", "Sie haben", "hat"],
-      answer: 0,
-      explanation: "'haben' (formal plural/Sie) al final del NS: 'Wenn Sie keine Bestätigung haben, kann ich…'"
-    },
-  ]
-},
-
+    id: "game9", title: "🔀 Verb-Ende con wenn", category: 5,
+    description: "El verbo conjugado siempre va al FINAL del Nebensatz con 'wenn'.",
+    questions: [
+      {
+        q: "Ich gehe nach Hause, wenn es zu regnen ___.",
+        hint: "Verbo al final del Nebensatz",
+        options: ["beginnt","beginnt es","es beginnt","beginnen"],
+        answer: 0,
+        explanation: "En el Nebensatz con 'wenn', el verbo conjugado va siempre al final: '…wenn es zu regnen beginnt.'"
+      },
+      {
+        q: "Wenn du früh ___, hast du mehr Zeit.",
+        hint: "NS antes del HS → verbo al final del NS",
+        options: ["aufstehst","stehst auf","du aufstehst","aufsteht"],
+        answer: 0,
+        explanation: "'aufstehst' va al final del Nebensatz. Verbos separables también van al final, unidos: 'aufstehst'."
+      },
+      {
+        q: "Er ruft mich an, wenn er Zeit ___.",
+        hint: "¿Cuál es la forma conjugada correcta al final?",
+        options: ["hat","haben","er hat","habe"],
+        answer: 0,
+        explanation: "'hat' (3.ª persona singular de 'haben') va al final del Nebensatz: '…wenn er Zeit hat.'"
+      },
+      {
+        q: "Wenn es ___, fahren wir Ski.",
+        hint: "El verbo va al final del Nebensatz inicial",
+        options: ["schneit","es schneit","schneit es","schneien"],
+        answer: 0,
+        explanation: "'schneit' al final del NS: 'Wenn es schneit, fahren wir Ski.' — con NS antes, el HS hace inversión."
+      },
+      {
+        q: "Wir spielen draußen, wenn es nicht ___.",
+        hint: "La negación 'nicht' va antes del verbo final",
+        options: ["regnet","regnet nicht","nicht regnet","regnen"],
+        answer: 0,
+        explanation: "Orden: … nicht + Verb (final). 'wenn es nicht regnet' — 'nicht' precede al verbo al final."
+      },
+      {
+        q: "Wenn du müde ___, schlaf ein bisschen.",
+        hint: "Verbo 'sein' conjugado al final del NS",
+        options: ["bist","sein","du bist","ist"],
+        answer: 0,
+        explanation: "'bist' (2.ª persona de 'sein') cierra el Nebensatz: 'Wenn du müde bist, schlaf…'"
+      },
+      {
+        q: "Sie lächelt, wenn sie ihre Freunde ___.",
+        hint: "¿Qué verbo y posición son correctos?",
+        options: ["sieht","sie sieht","sehen","siehst"],
+        answer: 0,
+        explanation: "'sieht' (3.ª pers. sing. de 'sehen') al final: '…wenn sie ihre Freunde sieht.'"
+      },
+      {
+        q: "Wenn Sie keine Bestätigung ___, kann ich Ihnen kein Zimmer geben.",
+        hint: "NS antes del HS — verbo al final del NS",
+        options: ["haben","haben Sie","Sie haben","hat"],
+        answer: 0,
+        explanation: "'haben' (formal/Sie) al final del NS: 'Wenn Sie keine Bestätigung haben, kann ich…'"
+      },
+    ]
+  },
   game10: {
-  id: "game10", title: "⏱️ Präsens, Perfekt o Modal?", category: 5,
-  description: "Identifica qué patrón verbal usa cada oración con 'wenn'.",
-  questions: [
-    {
-      q: "\"Wenn du deine Hausaufgaben gemacht hast, kannst du spielen.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "Busca el Partizip II y el auxiliar al final",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 1,
-      explanation: "Perfekt en NS: Subjekt + … + Partizip II + haben/sein (Ende). 'gemacht hast' → 'hast' al final."
-    },
-    {
-      q: "\"Wenn du das kaufen willst, musst du zuerst sparen.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "¿Hay un verbo modal al final?",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 2,
-      explanation: "Modal en NS: Subjekt + … + Infinitiv + Modal (Ende). 'kaufen willst' → el modal 'willst' al final."
-    },
-    {
-      q: "\"Ich lerne mehr, wenn ich Musik höre.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "¿Es un hábito en presente?",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 0,
-      explanation: "Präsens en NS: Subjekt + … + Verb (Ende). 'höre' al final, expresa un hábito actual."
-    },
-    {
-      q: "\"Ich rufe dich an, wenn ich angekommen bin.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "Busca el Partizip II y el auxiliar de movimiento",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 1,
-      explanation: "Perfekt con 'sein': 'angekommen bin' → Partizip II + sein (Ende). Verbos de movimiento usan 'sein'."
-    },
-    {
-      q: "\"Er hilft dir, wenn du fragen kannst.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "¿Qué tipo de verbo va al final?",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 2,
-      explanation: "Modal en NS: 'fragen kannst' → Infinitiv + Modal (Ende). El modal 'kannst' cierra el NS."
-    },
-    {
-      q: "\"Wenn wir gegessen haben, gehen wir spazieren.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "¿Cuál es el auxiliar al final?",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 1,
-      explanation: "Perfekt con 'haben': 'gegessen haben' → Partizip II + haben (Ende). Expresa acción completada."
-    },
-    {
-      q: "\"Wenn sie früher kommen muss, sagt sie es vorher.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "Verbo al final: ¿infinitivo + modal?",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 2,
-      explanation: "Modal en NS: 'kommen muss' → Infinitiv + Modal (Ende). El modal 'muss' siempre va al final."
-    },
-    {
-      q: "\"Wenn es regnet, bleiben wir zu Hause.\" — ¿Qué patrón usa el Nebensatz?",
-      hint: "Condición simple en presente",
-      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
-      answer: 0,
-      explanation: "Präsens en NS: 'regnet' al final. Condición general/habitual. NS antes → inversión en HS."
-    },
-  ]
-},
+    id: "game10", title: "⏱️ Präsens, Perfekt o Modal?", category: 5,
+    description: "Identifica qué patrón verbal usa cada oración con 'wenn'.",
+    questions: [
+      {
+        q: "\"Wenn du deine Hausaufgaben gemacht hast, kannst du spielen.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "Busca el Partizip II y el auxiliar al final",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 1,
+        explanation: "Perfekt en NS: Subjekt + … + Partizip II + haben/sein (Ende). 'gemacht hast' → 'hast' al final."
+      },
+      {
+        q: "\"Wenn du das kaufen willst, musst du zuerst sparen.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "¿Hay un verbo modal al final?",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 2,
+        explanation: "Modal en NS: Subjekt + … + Infinitiv + Modal (Ende). 'kaufen willst' → el modal 'willst' al final."
+      },
+      {
+        q: "\"Ich lerne mehr, wenn ich Musik höre.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "¿Es un hábito en presente?",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 0,
+        explanation: "Präsens en NS: Subjekt + … + Verb (Ende). 'höre' al final, expresa un hábito actual."
+      },
+      {
+        q: "\"Ich rufe dich an, wenn ich angekommen bin.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "Busca el Partizip II y el auxiliar de movimiento",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 1,
+        explanation: "Perfekt con 'sein': 'angekommen bin' → Partizip II + sein (Ende). Verbos de movimiento usan 'sein'."
+      },
+      {
+        q: "\"Er hilft dir, wenn du fragen kannst.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "¿Qué tipo de verbo va al final?",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 2,
+        explanation: "Modal en NS: 'fragen kannst' → Infinitiv + Modal (Ende). El modal 'kannst' cierra el NS."
+      },
+      {
+        q: "\"Wenn wir gegessen haben, gehen wir spazieren.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "¿Cuál es el auxiliar al final?",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 1,
+        explanation: "Perfekt con 'haben': 'gegessen haben' → Partizip II + haben (Ende). Expresa acción completada."
+      },
+      {
+        q: "\"Wenn sie früher kommen muss, sagt sie es vorher.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "Verbo al final: ¿infinitivo + modal?",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 2,
+        explanation: "Modal en NS: 'kommen muss' → Infinitiv + Modal (Ende). El modal 'muss' siempre va al final."
+      },
+      {
+        q: "\"Wenn es regnet, bleiben wir zu Hause.\" — ¿Qué patrón usa el Nebensatz?",
+        hint: "Condición simple en presente",
+        options: ["Präsens (Verb al final)","Perfekt (Partizip II + haben/sein)","Modal (Infinitiv + Modal)"],
+        answer: 0,
+        explanation: "Präsens en NS: 'regnet' al final. Condición general/habitual. NS antes → inversión en HS."
+      },
+    ]
+  },
 };
 
 const TIME_PER_Q = 15;
@@ -373,13 +364,14 @@ function FloatingOrbs() {
     </div>
   );
 }
+
 function GridOverlay() {
   return <div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: "linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px)", backgroundSize: "48px 48px" }} />;
 }
 
 function Confetti({ active }) {
   if (!active) return null;
-  const colors = ["#e040fb","#00e5ff","#ffea00","#76ff03","#ff5252","#ff9800","#f97316","#a855f7"];
+  const colors = ["#e040fb","#00e5ff","#ffea00","#76ff03","#ff5252","#ff9800","#f97316","#a855f7","#06b6d4","#84cc16"];
   return (
     <div style={{ position: "fixed", inset: 0, pointerEvents: "none", zIndex: 200, overflow: "hidden" }}>
       {Array.from({ length: 40 }, (_, i) => {
@@ -413,26 +405,33 @@ function HomeScreen({ onStart }) {
   return (
     <div style={PAGE}>
       <FloatingOrbs /><GridOverlay />
-      <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "52px 20px 40px", maxWidth: 820, margin: "0 auto" }}>
+      <div style={{ position: "relative", zIndex: 1, display: "flex", flexDirection: "column", alignItems: "center", padding: "52px 20px 40px", maxWidth: 900, margin: "0 auto" }}>
         <div style={{ fontSize: 60, marginBottom: 2, filter: "drop-shadow(0 0 18px #e040fb66)" }}>🇩🇪</div>
         <h1 style={{ fontFamily: "'Bangers',cursive", fontSize: 50, letterSpacing: 3, margin: 0, background: "linear-gradient(135deg,#e040fb,#00e5ff,#ffea00)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", textAlign: "center" }}>DeutschSpiel</h1>
-        <p style={{ fontSize: 15, color: "#6b7a99", textAlign: "center", margin: "10px 0 34px", lineHeight: 1.6, maxWidth: 460 }}>
-          Aprende <strong style={{ color: "#00e5ff" }}>Wechselpräpositionen</strong>, <strong style={{ color: "#ff6b35" }}>Adverbios</strong> e <strong style={{ color: "#f97316" }}>Indefinitpronomen</strong>
+        <p style={{ fontSize: 15, color: "#6b7a99", textAlign: "center", margin: "10px 0 20px", lineHeight: 1.6, maxWidth: 520 }}>
+          Aprende <strong style={{ color: "#00e5ff" }}>Wechselpräpositionen</strong>, <strong style={{ color: "#ff6b35" }}>Adverbios</strong>, <strong style={{ color: "#f97316" }}>Indefinitpronomen</strong> y <strong style={{ color: "#06b6d4" }}>wenn</strong>
         </p>
 
-        <div style={{ background: "linear-gradient(135deg,#f9731618,#a855f718)", border: "1px solid #f9731638", borderRadius: 14, padding: "10px 20px", marginBottom: 22, display: "flex", alignItems: "center", gap: 10 }}>
+        {/* Banner de novedades */}
+        <div style={{ background: "linear-gradient(135deg,#06b6d418,#84cc1618)", border: "1px solid #06b6d438", borderRadius: 14, padding: "10px 20px", marginBottom: 26, display: "flex", alignItems: "center", gap: 10 }}>
           <span style={{ fontSize: 18 }}>✨</span>
-          <span style={{ fontSize: 13, fontWeight: 700, color: "#f97316" }}>¡2 nuevos juegos de Indefinitpronomen disponibles!</span>
-          <span style={{ fontSize: 18 }}>☕</span>
+          <span style={{ fontSize: 13, fontWeight: 700, color: "#06b6d4" }}>¡4 nuevos juegos: Indefinitpronomen y wenn — Nebensatz!</span>
+          <span style={{ fontSize: 18 }}>🔀</span>
         </div>
 
-        {/* ── GRID RESPONSIVO: 4 cols desktop, 2 cols tablet, 1 col móvil ── */}
+        {/* Grid de juegos */}
         <div className="ds-game-grid" style={{ width: "100%" }}>
           {Object.values(GAME_DATA).map((g, i) => {
             const accent = GAME_COLORS[g.id];
-            const categoryLabels = { 1: "Punto 1", 2: "Punto 2", 3: "Punto 3", 4: "🆕 Indefinitpronomen" };
+            const categoryLabels = {
+              1: "Punto 1 — Präpositionen",
+              2: "Punto 2 — Verbos",
+              3: "Punto 3 — Adverbios",
+              4: "🆕 Indefinitpronomen",
+              5: "🆕 wenn"
+            };
             const categoryLabel = categoryLabels[g.category] || `Punto ${g.category}`;
-            const isNew = g.category === 4;
+            const isNew = g.category === 4 || g.category === 5;
             return (
               <div key={g.id} style={{
                 background: isNew ? `${accent}0e` : "rgba(255,255,255,0.04)",
@@ -440,7 +439,7 @@ function HomeScreen({ onStart }) {
                 borderRadius: 16,
                 padding: "16px 14px",
                 boxShadow: isNew ? `0 0 24px ${accent}22, 0 0 0 1px ${accent}18` : `0 0 18px ${accent}14`,
-                animation: `fadeUp 0.5s ease ${i * 0.07}s both`,
+                animation: `fadeUp 0.5s ease ${i * 0.06}s both`,
                 position: "relative",
                 overflow: "hidden",
               }}>
@@ -551,7 +550,7 @@ function LobbyScreen({ gameCode, isHost, players, selectedGames, onStartGame, on
   return (
     <div style={PAGE}>
       <FloatingOrbs /><GridOverlay />
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 620, margin: "0 auto", padding: "24px 20px 40px" }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 660, margin: "0 auto", padding: "24px 20px 40px" }}>
         <BackBtn onClick={onBack} />
         <div style={{ background: "linear-gradient(135deg,rgba(224,64,251,0.1),rgba(0,229,255,0.07))", border: "1px solid #e040fb3a", borderRadius: 20, padding: "22px 20px", textAlign: "center", marginTop: 28, marginBottom: 28, boxShadow: "0 0 32px #e040fb14" }}>
           <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: 2.5, color: "#6b7a99", marginBottom: 6 }}>Código de unión</div>
@@ -562,10 +561,16 @@ function LobbyScreen({ gameCode, isHost, players, selectedGames, onStartGame, on
         {isHost && (
           <div style={{ marginBottom: 22 }}>
             <div style={{ fontSize: 11, fontWeight: 800, textTransform: "uppercase", letterSpacing: 1.5, color: "#6b7a99", marginBottom: 10 }}>Selecciona los juegos</div>
-            {[1, 2, 3, 4].map(cat => {
+            {[1, 2, 3, 4, 5].map(cat => {
               const catGames = Object.values(GAME_DATA).filter(g => g.category === cat);
-              const catLabels = { 1: "Punto 1 — Wechselpräpositionen", 2: "Punto 2 — Verbos", 3: "Punto 3 — Adverbios", 4: "✨ Indefinitpronomen (Nuevo)" };
-              const catColor = { 1: "#e040fb", 2: "#76ff03", 3: "#ff6b35", 4: "#f97316" };
+              const catLabels = {
+                1: "Punto 1 — Wechselpräpositionen",
+                2: "Punto 2 — Verbos",
+                3: "Punto 3 — Adverbios",
+                4: "✨ Indefinitpronomen (Nuevo)",
+                5: "✨ wenn — Nebensatz (Nuevo)"
+              };
+              const catColor = { 1: "#e040fb", 2: "#76ff03", 3: "#ff6b35", 4: "#f97316", 5: "#06b6d4" };
               return (
                 <div key={cat} style={{ marginBottom: 14 }}>
                   <div style={{ fontSize: 10, fontWeight: 800, textTransform: "uppercase", letterSpacing: 1.5, color: catColor[cat], marginBottom: 7, paddingLeft: 4 }}>{catLabels[cat]}</div>
