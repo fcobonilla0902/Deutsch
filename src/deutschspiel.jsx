@@ -207,6 +207,132 @@ const GAME_DATA = {
       { q: "\"Kein Besteck? Hier ist keins.\" vs. \"Ich brauche keins.\" – ¿En cuál oración 'keins' es Akkusativ?", hint: "Busca el verbo transitivo que exige objeto directo", options: ["\"Hier ist keins\" (1ª oración)","\"Ich brauche keins\" (2ª oración)"], answer: 1, explanation: "\"brauche\" pide objeto directo → Akkusativ neutro = 'keins'. 'Hier ist keins' es Nominativ (sujeto)." },
     ]
   },
+
+  game9: {
+  id: "game9", title: "🔀 Verb-Ende con wenn", category: 5,
+  description: "Elige la forma correcta: el verbo conjugado siempre va al FINAL del Nebensatz.",
+  questions: [
+    {
+      q: "Ich gehe nach Hause, wenn es zu regnen ___.",
+      hint: "Verbo al final del Nebensatz",
+      options: ["beginnt", "beginnt es", "es beginnt", "beginnen"],
+      answer: 0,
+      explanation: "En el Nebensatz con 'wenn', el verbo conjugado va siempre al final: '…wenn es zu regnen beginnt.'"
+    },
+    {
+      q: "Wenn du früh ___, hast du mehr Zeit.",
+      hint: "NS antes del HS → verbo al final del NS",
+      options: ["aufstehst", "stehst auf", "du aufstehst", "aufsteht"],
+      answer: 0,
+      explanation: "'aufstehst' va al final del Nebensatz. Verbos separables también van al final, unidos: 'aufstehst'."
+    },
+    {
+      q: "Er ruft mich an, wenn er Zeit ___.",
+      hint: "¿Cuál es la forma conjugada correcta al final?",
+      options: ["hat", "haben", "er hat", "habe"],
+      answer: 0,
+      explanation: "'hat' (3.ª persona singular de 'haben') va al final del Nebensatz: '…wenn er Zeit hat.'"
+    },
+    {
+      q: "Wenn es ___, fahren wir Ski.",
+      hint: "El verbo va al final del Nebensatz inicial",
+      options: ["schneit", "es schneit", "schneit es", "schneien"],
+      answer: 0,
+      explanation: "'schneit' al final del NS: 'Wenn es schneit, fahren wir Ski.' — con NS antes, el HS hace inversión."
+    },
+    {
+      q: "Wir spielen draußen, wenn es nicht ___.",
+      hint: "La negación 'nicht' va antes del verbo final",
+      options: ["regnet", "regnet nicht", "nicht regnet", "regnen"],
+      answer: 0,
+      explanation: "Orden: … nicht + Verb (final). 'wenn es nicht regnet' — 'nicht' precede al verbo al final."
+    },
+    {
+      q: "Wenn du müde ___, schlaf ein bisschen.",
+      hint: "Verbo 'sein' conjugado al final del NS",
+      options: ["bist", "sein", "du bist", "ist"],
+      answer: 0,
+      explanation: "'bist' (2.ª persona de 'sein') cierra el Nebensatz: 'Wenn du müde bist, schlaf…'"
+    },
+    {
+      q: "Sie lächelt, wenn sie ihre Freunde ___.",
+      hint: "¿Qué verbo y posición son correctos?",
+      options: ["sieht", "sie sieht", "sehen", "siehst"],
+      answer: 0,
+      explanation: "'sieht' (3.ª pers. sing. de 'sehen') al final: '…wenn sie ihre Freunde sieht.'"
+    },
+    {
+      q: "Wenn Sie keine Bestätigung ___, kann ich Ihnen kein Zimmer geben.",
+      hint: "NS antes del HS — verbo al final del NS",
+      options: ["haben", "haben Sie", "Sie haben", "hat"],
+      answer: 0,
+      explanation: "'haben' (formal plural/Sie) al final del NS: 'Wenn Sie keine Bestätigung haben, kann ich…'"
+    },
+  ]
+},
+
+  game10: {
+  id: "game10", title: "⏱️ Präsens, Perfekt o Modal?", category: 5,
+  description: "Identifica qué patrón verbal usa cada oración con 'wenn'.",
+  questions: [
+    {
+      q: "\"Wenn du deine Hausaufgaben gemacht hast, kannst du spielen.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "Busca el Partizip II y el auxiliar al final",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 1,
+      explanation: "Perfekt en NS: Subjekt + … + Partizip II + haben/sein (Ende). 'gemacht hast' → 'hast' al final."
+    },
+    {
+      q: "\"Wenn du das kaufen willst, musst du zuerst sparen.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "¿Hay un verbo modal al final?",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 2,
+      explanation: "Modal en NS: Subjekt + … + Infinitiv + Modal (Ende). 'kaufen willst' → el modal 'willst' al final."
+    },
+    {
+      q: "\"Ich lerne mehr, wenn ich Musik höre.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "¿Es un hábito en presente?",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 0,
+      explanation: "Präsens en NS: Subjekt + … + Verb (Ende). 'höre' al final, expresa un hábito actual."
+    },
+    {
+      q: "\"Ich rufe dich an, wenn ich angekommen bin.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "Busca el Partizip II y el auxiliar de movimiento",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 1,
+      explanation: "Perfekt con 'sein': 'angekommen bin' → Partizip II + sein (Ende). Verbos de movimiento usan 'sein'."
+    },
+    {
+      q: "\"Er hilft dir, wenn du fragen kannst.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "¿Qué tipo de verbo va al final?",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 2,
+      explanation: "Modal en NS: 'fragen kannst' → Infinitiv + Modal (Ende). El modal 'kannst' cierra el NS."
+    },
+    {
+      q: "\"Wenn wir gegessen haben, gehen wir spazieren.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "¿Cuál es el auxiliar al final?",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 1,
+      explanation: "Perfekt con 'haben': 'gegessen haben' → Partizip II + haben (Ende). Expresa acción completada."
+    },
+    {
+      q: "\"Wenn sie früher kommen muss, sagt sie es vorher.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "Verbo al final: ¿infinitivo + modal?",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 2,
+      explanation: "Modal en NS: 'kommen muss' → Infinitiv + Modal (Ende). El modal 'muss' siempre va al final."
+    },
+    {
+      q: "\"Wenn es regnet, bleiben wir zu Hause.\" — ¿Qué patrón usa el Nebensatz?",
+      hint: "Condición simple en presente",
+      options: ["Präsens (Verb al final)", "Perfekt (Partizip II + haben/sein)", "Modal (Infinitiv + Modal)"],
+      answer: 0,
+      explanation: "Präsens en NS: 'regnet' al final. Condición general/habitual. NS antes → inversión en HS."
+    },
+  ]
+},
 };
 
 const TIME_PER_Q = 15;
@@ -220,6 +346,8 @@ const GAME_COLORS = {
   game6: "#9c27b0",
   game7: "#f97316",
   game8: "#a855f7",
+  game9: "#06b6d4",
+  game10: "#84cc16",
 };
 
 function calcPoints(t) { return Math.max(100, Math.round((t / TIME_PER_Q) * POINTS_BASE)); }
